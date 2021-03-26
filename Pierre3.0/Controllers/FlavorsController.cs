@@ -1,13 +1,14 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using ToDoList.Models;
+using Bakery.Models;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using System.Threading.Tasks;
 using System.Security.Claims;
+
 
 namespace Bakery.Controllers
 {
@@ -23,12 +24,12 @@ namespace Bakery.Controllers
       _db = db;
     }
 
-    public Task<ActionResult> Index()
+    public async Task<ActionResult> Index()
     {
       var userId = this.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
       var currentUser = await _userManager.FindByIdAsync(userId);
-      var userItems = _db.Items.Where(entry => entry.User.Id == currentUser.Id).ToList();
-      return View(userItems);
+      var userFlavors = _db.Flavors.Where(entry => entry.User.Id == currentUser.Id).ToList();
+      return View(userFlavors);
     }
 
     public ActionResult Create()
